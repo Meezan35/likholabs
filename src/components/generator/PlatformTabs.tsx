@@ -59,7 +59,7 @@ export function PlatformTabs({ active, onChange }: PlatformTabsProps) {
             'px-3 py-2 rounded-lg text-sm font-medium',
             'border transition-colors duration-200 cursor-pointer',
             active === id
-              ? 'bg-card text-text-primary border-border shadow-sm'
+              ? 'bg-card text-text-primary border-border shadow-sm ring-1 ring-accent/20'
               : 'border-transparent text-text-muted hover:text-text-secondary hover:bg-card/50',
           ].join(' ')}
         >

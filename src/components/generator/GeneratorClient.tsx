@@ -12,7 +12,7 @@ const ContentSection = dynamic(
 )
 
 export function GeneratorClient() {
-  const { status, result, error, generate, reset } = useGenerate()
+  const { status, result, error, streamBuffer, generate, reset } = useGenerate()
   const [lastTone, setLastTone] = useState<Tone>('professional')
   const [lastInput, setLastInput] = useState<GenerateInput | null>(null)
 
@@ -65,6 +65,7 @@ export function GeneratorClient() {
         result={result}
         status={status}
         tone={lastTone}
+        streamBuffer={streamBuffer}
         onRegenerateAll={handleRegenerateAll}
       />
     </div>

@@ -9,7 +9,9 @@ export default function Home() {
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-text-primary tracking-tight mb-2">
             Create content that{' '}
-            <span className="text-text-accent">converts</span>
+            <span className="bg-gradient-to-r from-accent to-emerald-400 bg-clip-text text-transparent">
+              converts
+            </span>
           </h1>
           <p className="text-text-secondary text-base">
             Describe your idea and get AI-generated posts optimized for LinkedIn, Twitter/X, and Instagram — ready to publish.

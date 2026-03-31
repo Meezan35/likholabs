@@ -44,7 +44,16 @@ Return a JSON object matching EXACTLY this schema (no extra keys, no markdown):
     "#tag1", "#tag2", "#tag3", "#tag4", "#tag5",
     "#tag6", "#tag7", "#tag8", "#tag9", "#tag10"
   ],
-  "engagement_score": <integer 0–100 reflecting predicted virality>
+  "score_breakdown": {
+    "hook": <integer 0–100 — how attention-grabbing and scroll-stopping the opening line is; weak or generic hooks score below 50>,
+    "clarity": <integer 0–100 — how easy the core message is to understand in one read; jargon or muddled ideas score lower>,
+    "readability": <integer 0–100 — flow, sentence rhythm, use of whitespace and structure for the platform>
+  },
+  "performance_reasons": [
+    "<specific reason 1 why this content is likely to perform well>",
+    "<specific reason 2>",
+    "<specific reason 3>"
+  ]
 }
 
 Tailor all content to the "${input.tone}" tone and "${input.audience}" audience. Be specific, original, and platform-native.`

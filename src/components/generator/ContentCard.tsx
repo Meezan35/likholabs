@@ -68,7 +68,7 @@ export const ContentCard = memo(function ContentCard({
   }, [content, platform, tone])
 
   return (
-    <article className="rounded-2xl border border-border bg-card hover:bg-card-hover transition-colors duration-150 shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] flex flex-col">
+    <article className="rounded-2xl border border-border bg-card hover:bg-card-hover transition-colors duration-150 shadow-[var(--shadow-card),inset_0_1px_0_0_rgb(255_255_255/0.04)] hover:shadow-[var(--shadow-card-hover),inset_0_1px_0_0_rgb(255_255_255/0.06)] flex flex-col">
       <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border-subtle">
         <Badge variant="default">{VARIANT_LABELS[index] ?? `Variation ${index + 1}`}</Badge>
         <button

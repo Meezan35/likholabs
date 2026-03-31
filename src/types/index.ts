@@ -14,13 +14,20 @@ export interface PlatformVariations {
   variations: string[]
 }
 
+export interface ScoreBreakdown {
+  hook: number
+  clarity: number
+  readability: number
+}
+
 export interface GenerateResult {
   linkedin: PlatformVariations
   twitter: PlatformVariations
   instagram: PlatformVariations
   hooks: string[]
   hashtags: string[]
-  engagement_score: number
+  score_breakdown: ScoreBreakdown
+  performance_reasons: string[]
 }
 
 export interface ImproveInput {
