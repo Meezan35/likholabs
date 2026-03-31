@@ -28,6 +28,7 @@
   --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.4), 0 1px 2px -1px rgb(0 0 0 / 0.4);
   --shadow-card-hover: 0 4px 12px 0 rgb(0 0 0 / 0.5);
   --shadow-glow: 0 0 20px rgb(20 184 166 / 0.15);
+  --shadow-glow-strong: 0 0 30px rgb(20 184 166 / 0.3);
 }
 
 /* Light theme */
@@ -138,4 +139,9 @@ body {
 /* ─── Transitions ───────────────────────────────────────────── */
 .transition-theme {
   transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+/* ─── Ambient Glow ──────────────────────────────────────────── */
+.bg-ambient {
+  background: radial-gradient(ellipse 80% 45% at 50% -5%, rgb(20 184 166 / 0.07) 0%, transparent 70%);
 }

@@ -11,10 +11,12 @@ const metrics: { key: keyof ScoreBreakdownType; label: string }[] = [
   { key: 'readability', label: 'Readability' },
 ]
 
-function getBarColor(value: number): string {
-  if (value >= 75) return 'bg-emerald-500'
-  if (value >= 50) return 'bg-accent'
-  return 'bg-amber-500'
+function getBarStyle(value: number): React.CSSProperties {
+  if (value >= 75)
+    return { background: 'linear-gradient(90deg, #14b8a6, #10b981)', width: `${value}%` }
+  if (value >= 50)
+    return { background: 'linear-gradient(90deg, #f59e0b, #14b8a6)', width: `${value}%` }
+  return { background: 'linear-gradient(90deg, #ef4444, #f59e0b)', width: `${value}%` }
 }
 
 function getLabelColor(value: number): string {
@@ -40,8 +42,8 @@ export function ScoreBreakdown({ score, breakdown }: ScoreBreakdownProps) {
               <span className="text-xs text-text-secondary w-20 shrink-0">{label}</span>
               <div className="flex-1 h-1.5 rounded-full bg-card overflow-hidden">
                 <div
-                  className={`h-full rounded-full transition-all duration-500 ${getBarColor(value)}`}
-                  style={{ width: `${value}%` }}
+                  className="h-full rounded-full transition-all duration-500"
+                  style={getBarStyle(value)}
                 />
               </div>
               <span className={`text-xs tabular-nums w-8 text-right shrink-0 ${getLabelColor(value)}`}>

@@ -26,7 +26,6 @@ export interface GenerateResult {
   instagram: PlatformVariations
   hooks: string[]
   hashtags: string[]
-  engagement_score: number
   score_breakdown: ScoreBreakdown
   performance_reasons: string[]
 }

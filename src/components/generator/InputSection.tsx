@@ -55,7 +55,8 @@ export function InputSection({ onGenerate, status }: InputSectionProps) {
   }, [ideaError])
 
   return (
-    <section className="w-full rounded-2xl border border-border bg-card p-6 flex flex-col gap-5 shadow-[var(--shadow-card)]">
+    <section className="relative overflow-hidden w-full rounded-2xl border border-border bg-card p-6 flex flex-col gap-5 shadow-[var(--shadow-card)]">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/25 to-transparent" aria-hidden />
       <div>
         <h2 className="text-base font-semibold text-text-primary mb-0.5">What do you want to post about?</h2>
         <p className="text-sm text-text-muted">Describe your idea and we&apos;ll generate platform-optimized content.</p>

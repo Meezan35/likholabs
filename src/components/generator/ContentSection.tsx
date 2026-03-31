@@ -45,7 +45,9 @@ export function ContentSection({ result, status, tone, streamBuffer, onRegenerat
   if (status === 'streaming') return <StreamingPreview buffer={streamBuffer ?? ''} />
   if (!result) return null
 
-  const score = result.engagement_score
+  const score = result.score_breakdown
+    ? Math.round((result.score_breakdown.hook + result.score_breakdown.clarity + result.score_breakdown.readability) / 3)
+    : 0
 
   return (
     <div className="flex flex-col gap-5">
