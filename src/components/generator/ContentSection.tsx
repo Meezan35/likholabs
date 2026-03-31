@@ -5,6 +5,7 @@ import { PlatformTabs } from './PlatformTabs'
 import { ContentCard } from './ContentCard'
 import { ScoreBreakdown } from './ScoreBreakdown'
 import { PerformanceReasons } from './PerformanceReasons'
+import { StreamingPreview } from './StreamingPreview'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { ResultsSkeleton } from '@/components/ui/Skeleton'
@@ -15,14 +16,13 @@ interface ContentSectionProps {
   result: GenerateResult | null
   status: GenerateStatus
   tone: Tone
+  streamBuffer?: string
   onRegenerateAll: () => void
 }
 
-export function ContentSection({ result, status, tone, onRegenerateAll }: ContentSectionProps) {
+export function ContentSection({ result, status, tone, streamBuffer, onRegenerateAll }: ContentSectionProps) {
   const [activePlatform, setActivePlatform] = useState<Platform>('linkedin')
   const { copy, copiedId } = useClipboard()
-
-  const isLoading = status === 'loading' || status === 'streaming'
 
   const activeVariations = useMemo(() => {
     if (!result) return []
@@ -41,7 +41,8 @@ export function ContentSection({ result, status, tone, onRegenerateAll }: Conten
     copy(allContent)
   }, [allContent, copy])
 
-  if (isLoading) return <ResultsSkeleton />
+  if (status === 'loading') return <ResultsSkeleton />
+  if (status === 'streaming') return <StreamingPreview buffer={streamBuffer ?? ''} />
   if (!result) return null
 
   const score = result.engagement_score

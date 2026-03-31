@@ -98,14 +98,20 @@ export function useGenerate(): UseGenerateReturn {
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
       let accumulated = ''
+      let lastUpdate = 0
 
       while (true) {
         const { done, value } = await reader.read()
         if (done) break
         const chunk = decoder.decode(value, { stream: true })
         accumulated += chunk
-        setStreamBuffer(accumulated)
+        const now = Date.now()
+        if (now - lastUpdate >= 50) {
+          setStreamBuffer(accumulated)
+          lastUpdate = now
+        }
       }
+      setStreamBuffer(accumulated)
 
       const parsed = safeParseJSON<GenerateResult>(accumulated)
       if (!parsed) {
