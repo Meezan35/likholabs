@@ -3,6 +3,8 @@
 import { useState, useCallback, useMemo } from 'react'
 import { PlatformTabs } from './PlatformTabs'
 import { ContentCard } from './ContentCard'
+import { ScoreBreakdown } from './ScoreBreakdown'
+import { PerformanceReasons } from './PerformanceReasons'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { ResultsSkeleton } from '@/components/ui/Skeleton'
@@ -18,7 +20,7 @@ interface ContentSectionProps {
 
 export function ContentSection({ result, status, tone, onRegenerateAll }: ContentSectionProps) {
   const [activePlatform, setActivePlatform] = useState<Platform>('linkedin')
-  const { copy } = useClipboard()
+  const { copy, copiedId } = useClipboard()
 
   const isLoading = status === 'loading' || status === 'streaming'
 
@@ -27,11 +29,17 @@ export function ContentSection({ result, status, tone, onRegenerateAll }: Conten
     return result[activePlatform].variations
   }, [result, activePlatform])
 
+  const allContent = useMemo(() => {
+    if (!result) return ''
+    return result[activePlatform].variations.join('\n\n---\n\n')
+  }, [result, activePlatform])
+
+  const isCopiedAll = copiedId === allContent.slice(0, 40)
+
   const handleCopyAll = useCallback(() => {
-    if (!result) return
-    const allContent = result[activePlatform].variations.join('\n\n---\n\n')
+    if (!allContent) return
     copy(allContent)
-  }, [result, activePlatform, copy])
+  }, [allContent, copy])
 
   if (isLoading) return <ResultsSkeleton />
   if (!result) return null
@@ -54,11 +62,22 @@ export function ContentSection({ result, status, tone, onRegenerateAll }: Conten
         </div>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={handleCopyAll}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-            </svg>
-            Copy All
+            {isCopiedAll ? (
+              <>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                Copied!
+              </>
+            ) : (
+              <>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+                Copy All
+              </>
+            )}
           </Button>
           <Button variant="secondary" size="sm" onClick={onRegenerateAll}>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -70,6 +89,10 @@ export function ContentSection({ result, status, tone, onRegenerateAll }: Conten
           </Button>
         </div>
       </div>
+
+      {result.score_breakdown && (
+        <ScoreBreakdown score={score} breakdown={result.score_breakdown} />
+      )}
 
       <PlatformTabs active={activePlatform} onChange={setActivePlatform} />
 
@@ -98,6 +121,10 @@ export function ContentSection({ result, status, tone, onRegenerateAll }: Conten
           />
         ))}
       </div>
+
+      {result.performance_reasons?.length > 0 && (
+        <PerformanceReasons reasons={result.performance_reasons} />
+      )}
 
       {result.hashtags.length > 0 && (
         <div className="rounded-xl border border-border-subtle bg-surface p-4">
