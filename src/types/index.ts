@@ -49,4 +49,20 @@ export interface ValidationResult {
 
 export interface ApiError {
   error: string
+  code?: 'SIGN_IN_REQUIRED' | 'UPGRADE_REQUIRED' | 'RATE_LIMITED'
+}
+
+export type Plan = 'free' | 'pro'
+
+export interface UserRecord {
+  id: string
+  email: string
+  plan: Plan
+  stripe_customer_id: string | null
+  created_at: string
+}
+
+export interface UsageRecord {
+  generations: number
+  improves: number
 }

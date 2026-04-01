@@ -8,7 +8,9 @@ interface UseGenerateReturn {
   status: GenerateStatus
   result: GenerateResult | null
   error: string | null
+  errorCode: string | null
   streamBuffer: string
+  generationSyncTick: number
   generate: (input: GenerateInput, skipCache?: boolean) => Promise<void>
   reset: () => void
 }
@@ -44,7 +46,9 @@ export function useGenerate(): UseGenerateReturn {
   const [status, setStatus] = useState<GenerateStatus>('idle')
   const [result, setResult] = useState<GenerateResult | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [errorCode, setErrorCode] = useState<string | null>(null)
   const [streamBuffer, setStreamBuffer] = useState('')
+  const [generationSyncTick, setGenerationSyncTick] = useState(0)
   const abortRef = useRef<AbortController | null>(null)
 
   const reset = useCallback(() => {
@@ -52,6 +56,7 @@ export function useGenerate(): UseGenerateReturn {
     setStatus('idle')
     setResult(null)
     setError(null)
+    setErrorCode(null)
     setStreamBuffer('')
   }, [])
 
@@ -73,6 +78,7 @@ export function useGenerate(): UseGenerateReturn {
 
     setStatus('loading')
     setError(null)
+    setErrorCode(null)
     setStreamBuffer('')
     setResult(null)
 
@@ -85,7 +91,8 @@ export function useGenerate(): UseGenerateReturn {
       })
 
       if (!response.ok) {
-        const errData = (await response.json()) as { error?: string }
+        const errData = (await response.json()) as { error?: string; code?: string }
+        if (errData.code) setErrorCode(errData.code)
         throw new Error(errData.error ?? `Request failed (${response.status})`)
       }
 
@@ -122,6 +129,7 @@ export function useGenerate(): UseGenerateReturn {
       setResult(parsed)
       setStatus('success')
       setStreamBuffer('')
+      setGenerationSyncTick((v) => v + 1)
     } catch (err) {
       if (err instanceof Error && err.name === 'AbortError') return
       const message = err instanceof Error ? err.message : 'Something went wrong'
@@ -131,5 +139,5 @@ export function useGenerate(): UseGenerateReturn {
     }
   }, [])
 
-  return { status, result, error, streamBuffer, generate, reset }
+  return { status, result, error, errorCode, streamBuffer, generationSyncTick, generate, reset }
 }
