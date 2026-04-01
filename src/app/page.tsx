@@ -1,6 +1,8 @@
 import { Header } from '@/components/layout/Header'
 import { GeneratorClient } from '@/components/generator/GeneratorClient'
 
+export const dynamic = 'force-dynamic'
+
 export default function Home() {
   return (
     <>

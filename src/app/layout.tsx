@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,8 +31,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-text-primary">
-        <div className="bg-ambient fixed inset-0 pointer-events-none z-0" aria-hidden />
-        {children}
+        <ClerkProvider dynamic>
+          <div className="bg-ambient fixed inset-0 pointer-events-none z-0" aria-hidden />
+          {children}
+        </ClerkProvider>
       </body>
     </html>
   );
