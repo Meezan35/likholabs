@@ -1,5 +1,5 @@
 import { auth, currentUser } from '@clerk/nextjs/server'
-import { stripe } from '@/lib/stripe'
+import { getStripeClient } from '@/lib/stripe'
 import { db } from '@/lib/db'
 import { ensureUserExists } from '@/lib/usage'
 
@@ -14,6 +14,7 @@ export async function POST(request: Request): Promise<Response> {
         { status: 503 },
       )
     }
+    const stripe = getStripeClient()
 
     const { userId } = await auth()
 

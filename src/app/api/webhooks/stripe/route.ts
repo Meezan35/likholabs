@@ -1,4 +1,5 @@
-import { stripe } from '@/lib/stripe'
+import type Stripe from 'stripe'
+import { getStripeClient } from '@/lib/stripe'
 import { db } from '@/lib/db'
 
 export const runtime = 'nodejs'
@@ -8,6 +9,7 @@ export async function POST(request: Request): Promise<Response> {
   if (process.env.BILLING_ENABLED !== 'true') {
     return Response.json({ received: true, skipped: 'billing_disabled' })
   }
+  const stripe = getStripeClient()
 
   const secret = process.env.STRIPE_WEBHOOK_SECRET
   if (!secret) {
@@ -21,7 +23,7 @@ export async function POST(request: Request): Promise<Response> {
     return Response.json({ error: 'Missing stripe-signature header' }, { status: 400 })
   }
 
-  let event: ReturnType<typeof stripe.webhooks.constructEvent> extends Promise<infer T> ? T : ReturnType<typeof stripe.webhooks.constructEvent>
+  let event: Stripe.Event
 
   try {
     event = stripe.webhooks.constructEvent(body, sig, secret)
